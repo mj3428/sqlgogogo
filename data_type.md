@@ -27,3 +27,21 @@ bolb能用来**保存二进制**，如照片;Text能**长篇文档**，如保存
 **记录年月日时分秒**，并且记录的年份比较久远，那么最好使用DATETIME,而不要使用TIMESTAMP  
 
 **如果时区不同**,那么最好使用TIMESTAMP，因为日期类型中只有它能够和实际时区相对应。  
+
+## 服务器字符集和校对规则
+可以在my.cnf中设置:
+```
+
+[mysqld]
+character-set-server=gbk
+```  
+或者在启动选项中指定:
+```
+
+mysqld --character-set-server=gbk
+```  
+或者在编译时指定:
+```
+
+shell> cmake . -DDEFAULT_CHARSET=gbk
+```
