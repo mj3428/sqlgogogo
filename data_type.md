@@ -37,11 +37,9 @@ character-set-server=gbk
 ```  
 或者在启动选项中指定:
 ```
-
 mysqld --character-set-server=gbk
 ```  
 或者在编译时指定:
 ```
-
 shell> cmake . -DDEFAULT_CHARSET=gbk
 ```
