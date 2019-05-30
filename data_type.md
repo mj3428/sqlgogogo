@@ -43,3 +43,12 @@ mysqld --character-set-server=gbk
 ```
 shell> cmake . -DDEFAULT_CHARSET=gbk
 ```
+查询当前服务器的字符集和校对规则：
+```
+
+mysql> show variables like 'character_set_server'; \\字符集
+
+mysql> show variables like 'collation_server'; \\校对规则
+```
+
+
