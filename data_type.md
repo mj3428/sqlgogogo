@@ -51,4 +51,19 @@ mysql> show variables like 'character_set_server'; \\字符集
 mysql> show variables like 'collation_server'; \\校对规则
 ```
 
+## 数据库字符集和校对规则
+规则如下:  
+- 如果指定了字符集和校对规则，则使用指定的字符集和校对规则；  
+- 如果指定了字符集没有指定校对规则，则使用指定字符集的默认校对规则；  
+- 如果指定了校对规则但未指定字符集，则字符集使用与该校对规则关联的字符集；  
+- 如果没有指定字符集和校对规则，则使用服务器字符集和校对规则作为数据库的字符集和校对规则；  
+命令查看：
+```
+
+mysql> show variables like 'character_set_database'; \\字符集
+
+mysql> show variables like 'collation_database'; \\校对规则
+```
+表和列同理  
+
 
