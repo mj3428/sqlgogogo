@@ -1,6 +1,5 @@
 ### 创建索引语法:
 ```
-
 CREATE[UNIQUE|FULLTEXT|SPATIAL]INDEX index_name
 [USING index_type]
 ON tbl_name(index_col_name,...)
@@ -36,5 +35,5 @@ MEMORY存储引擎的表可以使用BTREE索引和HASH索引
 * 只用于使用=或者<=>操作符的等式比较
 * 优化器不能使用HASH索引来加速ORDER BY操作
 * MYSQL不能确定在两个值之间约有多少行。如果将一个MyISAM表改为HASH索引的MEMORY表，会影响一些查询的执行效率
-* 只能使用整个关键字来搜索一行
+* 只能使用整个关键字来搜索一行  
 而对于BTREE索引，当使用>,<,>=,<=,BTWEEN,!=,<>,或者LIKE'pattern'（其中'pattern'不以通配符开始）操作符时，都可以使用相关列上的索引。  
