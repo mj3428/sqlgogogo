@@ -90,4 +90,4 @@ alter event test_event_1 disable;
 --删除 event
 drop event test_event_1;
 ```
-**适用场景：**定期收集统计信息、定期清理历史数据、定期数据库检查（例如，自动监控和恢复Slave失败进程）
+**适用场景：** 定期收集统计信息、定期清理历史数据、定期数据库检查（例如，自动监控和恢复Slave失败进程）
