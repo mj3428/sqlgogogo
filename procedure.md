@@ -24,3 +24,36 @@
     RETURN v_rentfees + v_overfees - v_payments;
    END $$
    ```
+## 定义条件和处理
+```
+delimiter $$
+CREATE PROCEDURE actor_insert()
+BEGIN
+   DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET @x2 = 1;
+   SET @x = 1;
+ INSERT INTO actor(actor_id,first_name,last_name) VALUES (201,'Test','201');
+   SET @x = 2;
+ INSERT INTO actor(actor_id,first_name,last_name) VALUES (1,'Test','1');
+   SET @x = 3;
+END
+$$
+```
+写成以下几种方式：
+```
+--捕获mysql-error-code:
+DECLARE CONTINUE HANDLER FOR 1062 SET @x2 = 1;
+--事先定义condition_name:
+DECLARE DuplicateKey CONDITION FOR SQLSTATE '23000';
+DECLARE CONTINUE HANDLER FOR DuplicateKey SET @X2 = 1;
+--捕获SQLEXCEPTION
+DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @x2 =1;
+```
+## 光标的使用
+* 声明光标  
+  `DECLARE cursor_name CURSOR FOR select_statement`
+* OPEN光标  
+  `OPEN cursor_name`
+* FETCH光标  
+  `FETCH cursor_name INTO var_name[, var_name]..`
+* CLOSE光标  
+  `CLOSE cursor`
