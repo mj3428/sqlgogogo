@@ -25,6 +25,7 @@
    END $$
    ```
 ## 定义条件和处理
+@x是赋值语句，给x变量赋一个初始值
 ```
 delimiter $$
 CREATE PROCEDURE actor_insert()
@@ -57,3 +58,36 @@ DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET @x2 =1;
   `FETCH cursor_name INTO var_name[, var_name]..`
 * CLOSE光标  
   `CLOSE cursor`
+## 流程控制
+### LEAVE语句
+用来标注的流程构造中退出，通常和BEGIN..END或者循环一起使用
+### ITERATE语句
+ITERATE语句必须用在循环中，作用是跳过当前循环的剩下的语句，直接进入下一轮循环
+### REPEAT语句
+```
+REPEAT
+   FETCH cur_payment INTO i_staff_id, d_amount;
+      if i_staff_id = 2 then
+         set @x1 = @x1 + d_amount;
+      else set @x2 = @x2 + d_amount;
+      end if;
+UNTIL 0 END REPEAT;
+```
+### 事件调度器
+```
+# 每隔5秒向test表插入一条记录
+CREATE EVENT test_event_1
+ON SCHEDULE
+EVERY 5 SECOND
+DO
+INSERT INTO test.test(id1,create_time)
+VALUES ('test', now());
+```
+**如果事件调度器不再使用，可以禁用（disable）或者删除(drop)**
+```
+--禁用event
+alter event test_event_1 disable;
+--删除 event
+drop event test_event_1;
+```
+**适用场景：**定期收集统计信息、定期清理历史数据、定期数据库检查（例如，自动监控和恢复Slave失败进程）
