@@ -41,10 +41,12 @@ xid:gtrid[,buqual[,formatID]]
 ```
 XA END xid [SUSPEND [FOR MIGRATE]]
 XA PREPARE xid
-使事务进入PREPARE状态，也就是两阶段提交的第一个提交阶段
+# 使事务进入PREPARE状态，也就是两阶段提交的第一个提交阶段
+
 XA COMMIT xid [ONE PHASE]
 XA ROLLBACK xid
-上面两个命令用来提交或者回滚具体的分支事务。
+# 上面两个命令用来提交或者回滚具体的分支事务。
+
 XA RECOVER
 XA RECOVER返回当前数据库中出PREPARE桩体的分支事务的详细信息。
 ```
