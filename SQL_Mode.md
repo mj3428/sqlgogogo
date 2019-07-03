@@ -9,3 +9,4 @@
 select @@sql_mode
 `  
 默认有：REAL_AS_FLOAT,PIPES_AS_CONCAT,ANSI_QUOTES,GNORE_SPACE和ANSI。
+*比如要设置的时候，可以*`set session sql_mode='STRICT_TRANS_TABLES`进入严格模式，字段类型就会不允许超出  
