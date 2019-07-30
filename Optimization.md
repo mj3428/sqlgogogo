@@ -39,4 +39,23 @@ com_delete:执行DELETE操作的次数
 ### 定位执行效率低的sql语句
 - 用--log-slow-queries[=file_name]选项启动是，mysqld写一个包含所有执行时间超过long_query_time秒的SQL语句的日志文件  
 - 用show processlist命令查看当前mysql在进行的线程，包括线程的状态、是否锁表等。  
+### 通过EXPLAIN分析低效SQL的执行计划
+select查询前加上explain关键词；但是select也有其select_type，也有常见的类型
+
+| ALL | index | range | ref | eq_ref | const,system | NULL |
+| :--- | :---| :--- | :--- | :--- | :--- | :--- |  
+**从左到右，性能逐渐变好。**
+比如：  
+`explain select * from film where rating > 9\G`（\G为结束符）  
+这个语句type就是为all;  
+`explain select title from film`  
+这个是title为index,所以为第二类，用索引找，相较于全表扫描，更快;  
+接下来看range:  
+`explain select * from payment where custmoer_id >= 300 and customer_id <= 350`用索引来选取范围；  
+接下来看type=ref:  
+`explain select * from payment where customer_id=350\G`这里type=ref,key=idx_fk_customer_id,ref=const;  
+**索引idx_fk_customer_id是非唯一索引，查询条件为等值，所以扫描类型为ref**
+接下来看type=eq_ref:  
+`explain select * from film a, film_text b where a.film_id = b.film_id\G`多表连接中使用primary key或者unique index
+作为关联条件。这里type=eq_ref,key=primary。  
 
