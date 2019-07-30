@@ -44,6 +44,7 @@ select查询前加上explain关键词；但是select也有其select_type，也�
 
 | ALL | index | range | ref | eq_ref | const,system | NULL |
 | :--- | :---| :--- | :--- | :--- | :--- | :--- |  
+
 **从左到右，性能逐渐变好。**
 比如：  
 `explain select * from film where rating > 9\G`（\G为结束符）  
