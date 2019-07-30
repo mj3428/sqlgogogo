@@ -68,3 +68,6 @@ alter table customer add unique index uk_email(email);
 explain select * from (select * from customer where email = 'AARON.SELBY@sakilacustomer.org')a\G
 ```
 这里type=const,key=uk_email
+### 通过show profile分析sql
+可以通过set语句在Session级别开启profiling:`set profiling=1`  
+BTREE是最常见的 索引，构造类似二叉树，B不代表二叉树(binary)，而是代表平衡(balanced)  
