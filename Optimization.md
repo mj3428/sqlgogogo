@@ -59,4 +59,12 @@ select查询前加上explain关键词；但是select也有其select_type，也�
 接下来看type=eq_ref:  
 `explain select * from film a, film_text b where a.film_id = b.film_id\G`多表连接中使用primary key或者unique index
 作为关联条件。这里type=eq_ref,key=primary。  
-
+接下来看type=const/system，但表中最多有一个匹配行，查询起来迅速，比如根据主键primary key或者unique index进行查询:  
+```
+先设置主键
+alter table customer drop index idx_email;
+alter table customer add unique index uk_email(email);
+再查询
+explain select * from (select * from customer where email = 'AARON.SELBY@sakilacustomer.org')a\G
+```
+这里type=const,key=uk_email
