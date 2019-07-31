@@ -77,4 +77,20 @@ BTREE是最常见的 索引，构造类似二叉树，B不代表二叉树(binary
   全表扫描更快，就会全表扫描。**有的时候，我们可以用trace scan，再通过rows和cost计算扫描的成本，就能比效率了**  
 - InnoDB中表上二级索引，理想的访问方式应该是首先扫描二级索引获得满足条件的主键列表，之后根据主键回表去检索记录，这样访问不开了全表扫描产生的
   的大量IO请求。  
-  
+- **查看索引使用情况:** handler_read_key的值将很高，这个值代表了一个行被索引读的次数，很低的值表明增加索引得到的性能改善不高，因为
+  索引并不经常使用；handler_read_rnd_next的值高则意味着查询运行低效，并且应该建立索引补救。这个值的含义是在数据文件中读下一行的
+  请求数。语句为`show status like 'Handler_read%'`
+### 两个简单实用的优化方法
+#### 1）定期分析表和检查表
+* 分析表语句：`ANALYZE [LOCAL|NO_WARITE_TO_BINLOG] TABLE tbl_name[,tbl_name]...`比如analyze table payment  
+* 检查表语句: `CHECK TABLE tbl_name[,tbl_name]..[option]..option = {QUICK|FAST|MEDIUM|EXTENDED|CHANGED}`  
+#### 2)定期优化表
+* 优化表语句： `OPTIMIZE [LOCAL|NO_WRITE_TO_BINLOG] TABLE tbl_name [,tbl_name]...`  
+### 常用的SQL优化
+1. 大批量插入数据
+> 对于MyISAM存储引擎的表可以通过以下语句导入大量数据
+```
+ALTER TABLE tbl_name DISABLE KEYS;
+loading the data
+ALTER TABLE tbl_name ENABLE KEYS;
+```
