@@ -94,3 +94,23 @@ ALTER TABLE tbl_name DISABLE KEYS;
 loading the data
 ALTER TABLE tbl_name ENABLE KEYS;
 ```
+> DISABLE KEYS和ENABLE KEYS用来打开或者关闭MyISAM表非唯一索引的更新。在导入大量的数据到一个费控的MyISAM表时，通过设置这两个命令，
+可以提高导入效率。也就是说**导入数据前，关闭索引！！！**  
+*举例:*
+```
+i
+load data infile 'home/mysql/film_test.txt' into table film_test2;
+耗时115.12
+ii
+alter table film_test2 disable keys;
+load data infile 'home/mysql/film_test.txt' into table film_test2;
+alter table film_test2 enable keys;
+耗时18.59秒
+```
+> 另外，InnoDB类型是表时按照主键的顺序保存的，所以将导入的数据按照主键的顺序排列，可以有效的提高导入数据的效率。  
+> 在导入数据前执行SET UNIQUE_CHECKS=0,关闭唯一性校验，在导入结束后执行SET QUNIQUE_CHECKS=1恢复唯一性校验。  
+*举例:*
+```
+i
+load data infile '/home/mysql/film_test3.txt' into table film_test4;
+耗时
