@@ -111,6 +111,14 @@ alter table film_test2 enable keys;
 > 在导入数据前执行SET UNIQUE_CHECKS=0,关闭唯一性校验，在导入结束后执行SET QUNIQUE_CHECKS=1恢复唯一性校验。  
 *举例:*
 ```
-i
+i UNIQUE_CHECKS=1时
 load data infile '/home/mysql/film_test3.txt' into table film_test4;
-耗时
+耗时22.92秒
+ii UNIQUE_CHECKS=0时
+load data infile '/home/mysqlfilm_test3.txt' into table film_test4;
+耗时19.92秒
+```
+> 建议在导入前执行SET AUTOCOMMIT=0，关闭自动提交，导入结束后再执行SET AUTOCOMMIT=1,打开自动提交，也可以提高导入效率  
+2. 优化INSERT语句
+> 尽量一次插入多个值，如`insert iinto test values(1,2),(1,3),(1,4)...`  
+> 如果从不同客户插入多行
