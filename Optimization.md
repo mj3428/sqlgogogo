@@ -71,3 +71,10 @@ explain select * from (select * from customer where email = 'AARON.SELBY@sakilac
 ### 通过show profile分析sql
 可以通过set语句在Session级别开启profiling:`set profiling=1`  
 BTREE是最常见的 索引，构造类似二叉树，B不代表二叉树(binary)，而是代表平衡(balanced)  
+### 索引扫描
+- **复合索引**的情况下，假如查询条件不包含索引列最左边部分，即不满足最左原则，是不会使用复合索引的  
+- 如果Mysql估计使用索引比全表扫描更慢，则不使用索引，有的时候如，查询以“S”开头的标题电影，需要返回的记录比例较大，mysql就预估索引扫描还不如
+  全表扫描更快，就会全表扫描。**有的时候，我们可以用trace scan，再通过rows和cost计算扫描的成本，就能比效率了**  
+- InnoDB中表上二级索引，理想的访问方式应该是首先扫描二级索引获得满足条件的主键列表，之后根据主键回表去检索记录，这样访问不开了全表扫描产生的
+  的大量IO请求。  
+  
