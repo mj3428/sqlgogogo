@@ -123,13 +123,35 @@ load data infile '/home/mysqlfilm_test3.txt' into table film_test4;
 > 尽量一次插入多个值，如`insert into test values(1,2),(1,3),(1,4)...`  
 > 如果从不同客户插入多行.可以通过使用INSERT DELAYED语句得到更高的速度。DELAYED含义是让INSERT语句马上执行。  
 3. 优化ORDER BY语句  
-> explain中有一个extra的类型，显示为using index;using filesort；Filesort是通过相应的排序算法，将取得的数据在sort_buffer_size
+> explain中有一个extra的类型，显示为using filesort；Filesort是通过相应的排序算法，将取得的数据在sort_buffer_size
 系统变量设置的内存排序区中进行排序，如果内存装载不下，它就会将磁盘上的数据进行分块，再对各个数据块进行排序，然后将各个块合并
-成有序的结果集。ssort_buffer_size设置的排序区是每个线程独占的，所以同一个时刻，Mysql中存在多个sort buffer排序区。  
+成有序的结果集。ssort_buffer_size设置的排序区是每个线程独占的，所以同一个时刻，Mysql中存在多个sort buffer排序区。
+**总的来说Filesort非常耗时**  
 > 下列SQL可以使用索引:
 ```
 SELECT * FROM tabname ORDER BY key_part1, key_part2,...;
 SELECT * FROM tabname WHERE key_part1=1 ORDER BY key_part1 DESC, key_part2 DESC;
 SELECT * FROM tabname ORDER BY key_part1 DESC, key_part2 DESC;
 ```
-> 
+> 但是在以下几种情况下则不适用索引：
+```
+SELECT * FROM tabname ORDER BY key_part1 DESC, key_part2 ASC;
+-- order by的字段混合ASC和DESC
+SELECT * FROM tabname WHERE key2=constant ORDER BY key1;
+-- 用户查询行的关键字与ORDER BY中所使用的的不相同
+SELECT * FROM tabname ORDER BY key1, key2;
+-- 对不同的该关键字使用ORDER BY;
+```
+> **Filesort的优化**通过创建合适的索引能够减少Filesort出现，但是在某些情况下，条件限制不能让Filesort小时，那就需要想办法
+加快Filesort的操作。适当加大max_length_for_sort_data的值，能够让MySQL选择更优化的Filesort排序算法  
+4. 优化GROUP BY语句
+> GROUP BY之后添加ORDER BY NULL，禁止聚合后的Filesort  
+5. 优化嵌套查询  
+> 使用JOIN连接来完成查询，速度会快很多，尤其建有索引的情况。
+6. 优化分页查询
+> 第一种避免全表扫描,错误示范:`select film_id,description from film order by title limit 50,5`;再换个思路
+`select a.film_id, a.discription from film a inner join (select film_id from film order by title limit 50,5)b on
+a.film_id=b.film_id`
+> 第二种，记住页码，和分页最后一个数据，然后倒着来取数据，比如取41页10个数据，就记住42页第一个数据x，小于x,再limit。简单讲
+  就是把LIMIT m,n转换成LIMIT n的查询。**但是适合在排序字段不会出现重复值的特定环境，但是有出现大量重复值，而进行优化，有
+  丢失分页记录的风险**
