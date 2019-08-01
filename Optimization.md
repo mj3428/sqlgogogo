@@ -122,4 +122,14 @@ load data infile '/home/mysqlfilm_test3.txt' into table film_test4;
 2. 优化INSERT语句
 > 尽量一次插入多个值，如`insert into test values(1,2),(1,3),(1,4)...`  
 > 如果从不同客户插入多行.可以通过使用INSERT DELAYED语句得到更高的速度。DELAYED含义是让INSERT语句马上执行。  
-3. 优化ORDER BY语句
+3. 优化ORDER BY语句  
+> explain中有一个extra的类型，显示为using index;using filesort；Filesort是通过相应的排序算法，将取得的数据在sort_buffer_size
+系统变量设置的内存排序区中进行排序，如果内存装载不下，它就会将磁盘上的数据进行分块，再对各个数据块进行排序，然后将各个块合并
+成有序的结果集。ssort_buffer_size设置的排序区是每个线程独占的，所以同一个时刻，Mysql中存在多个sort buffer排序区。  
+> 下列SQL可以使用索引:
+```
+SELECT * FROM tabname ORDER BY key_part1, key_part2,...;
+SELECT * FROM tabname WHERE key_part1=1 ORDER BY key_part1 DESC, key_part2 DESC;
+SELECT * FROM tabname ORDER BY key_part1 DESC, key_part2 DESC;
+```
+> 
