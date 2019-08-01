@@ -120,5 +120,6 @@ load data infile '/home/mysqlfilm_test3.txt' into table film_test4;
 ```
 > 建议在导入前执行SET AUTOCOMMIT=0，关闭自动提交，导入结束后再执行SET AUTOCOMMIT=1,打开自动提交，也可以提高导入效率  
 2. 优化INSERT语句
-> 尽量一次插入多个值，如`insert iinto test values(1,2),(1,3),(1,4)...`  
-> 如果从不同客户插入多行
+> 尽量一次插入多个值，如`insert into test values(1,2),(1,3),(1,4)...`  
+> 如果从不同客户插入多行.可以通过使用INSERT DELAYED语句得到更高的速度。DELAYED含义是让INSERT语句马上执行。  
+3. 优化ORDER BY语句
