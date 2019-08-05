@@ -6,5 +6,5 @@
 SELECT * FROM tbl_name PROCEDURE ANALYSE();
 SELECT * FROM tbl_name PROCEDURE ANALYSE(16,256);
 ```
-第二句告诉PROCEDURE ANALYSE()不要为那些包含的值多余16个或者256个字节的ENUM类型提出建议。如果没有这样的限制，输出信息可能很长；
+第二句告诉PROCEDURE ANALYSE()不要为那些包含的值多余16个或者256个字节的ENUM类型提出优化建议。如果没有这样的限制，输出信息可能很长；
 ENUM定义通常很难阅读。  
