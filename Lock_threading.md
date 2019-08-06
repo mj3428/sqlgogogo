@@ -18,3 +18,16 @@ select sum(subtotal) from order_detail;
 unlock tables;
 ```
 在执行lock tables后，智能访问显式加锁的这些表，不能访问未加锁的表；同时，如果加的是读锁，那么智能执行查询操作，而不能执行更新操作。  
+## 什么时候使用表锁
+1. 使用LOCK tables 虽然可以给INNODB加表级锁，但必须说明的是，表锁不是由INNODB存储引擎层管理的，而是由其上一层MYSQL Server负责的
+仅当autocommit=0,innodb_table_locks=1时，INNODB层才知道MYSQL加的表锁，MYSQL SERVER也才能感知INNODB加的行锁，这种情况下，INNODB才能
+自动识别涉及表级锁的死锁；否则，INNODB将无法自动检测并处理这种死锁。  
+2. 在用LOCK TABLES对INNODB表加锁时要注意，要将AUTOCOMMIT设为0，否则MYSQL不会给表加锁；事务结束前，不要用UNLOCK TABLES释放表锁，因为
+UNLOCK TABLES会隐含地提交事务；COMMIT或ROLLBACK并不能释放用LOCK TABLES加的表级锁，必须用UNLOCK TABLES释放表锁。例如：
+```
+set autocommit=0;
+lock tables t1 write, t2 read,...;
+[do something with tables t1 and t2 here];
+commit;
+unlock tables;
+```
