@@ -32,3 +32,14 @@ innodb_buffer_pool_size决定InnoDB存储引擎表数据和索引数据的最大
  **InnoDB缓存池的命中率计算公式：（1-innodb_buffer_pool_reads/innodb_buffer_pool_read_request）×100** 如果命中率太低，则应考虑
  扩充内存、增加xx_pool_size的值。
  * **调整old sublist大小**
+在LRU list中，old sublist的比例由系统参数innodb_old_blocks_pct决定，其取值范围是5——95，默认是37。查看当前设置：`show global varaiables
+like '%innodb_old_blocks_pct%'`  
+* **调整innodb_old_blocks_time的设置**
+innodb_old_blocks_time参数决定了缓存数据块由old sublist转移到young sublist的快慢，当一个缓存数据块被插入到midpoint后，至少要在old sublist
+停留超过innodb_old_blocks_time（ms）后，才有可能转移到new sublist。可以避免表扫描污染buffer pool的情况。  
+* **调整缓存池数量，减少内部对缓存池数据结构的争用**
+MYSQL内部不同线程对INNODB缓存池的访问在某些阶段是互斥的，这种内部竞争也会产生性能问题，尤其在高并发和buffer pool较大的情况下。所以INNODB
+引入了innodb_buffer_pool_instances配置参数，对于较大的缓存池，适当增大此参数的值，可以降低并发导致的内部缓存访问冲突，改善性能。  
+* **控制innodb buffer刷新，延长数据缓存时间，减缓磁盘IO**
+在INNODB找不到干净的可用缓存页或检查点被触发等情况下,INNODB的后台线程就会开始把“脏的缓存页”回写到磁盘文件中，这个过程叫缓存刷新。  
+> 一个是innodb_max_dirty_pages_pct，它控制缓存池中脏页的最大比例，默认是75%。
