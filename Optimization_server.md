@@ -42,4 +42,8 @@ MYSQL内部不同线程对INNODB缓存池的访问在某些阶段是互斥的，
 引入了innodb_buffer_pool_instances配置参数，对于较大的缓存池，适当增大此参数的值，可以降低并发导致的内部缓存访问冲突，改善性能。  
 * **控制innodb buffer刷新，延长数据缓存时间，减缓磁盘IO**
 在INNODB找不到干净的可用缓存页或检查点被触发等情况下,INNODB的后台线程就会开始把“脏的缓存页”回写到磁盘文件中，这个过程叫缓存刷新。  
-> 一个是innodb_max_dirty_pages_pct，它控制缓存池中脏页的最大比例，默认是75%。
+> 一个是innodb_max_dirty_pages_pct，它控制缓存池中脏页的最大比例，默认是75%。  
+> 另一个是innodb_io_capacity的默认值是200，代表磁盘系统的IO能力，其值在一定的程度上代表磁盘每秒可完成IO的次数，转速较慢可以降低值，
+转速较快，可以增大值。可以根据一些INNODB MONITOR的值来调整innodb_max_dirty_pages_pct和innodb_io_capacity。例如，
+若innodb_buffer_pool_wait_freee的值增长较快，则说明INNODB经常在等待空闲缓存页，如果无法增大缓存池，那么应将innodb_max_dirty_pages_pct
+的值调小，或将innodb_io_capacity的值提高，以加快脏页的刷新。  
