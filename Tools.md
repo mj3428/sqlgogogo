@@ -26,7 +26,7 @@
 用法如下:`shell> mysqladmin [options] command [command-options][command[command-options]]`  
 比如`shell# mysqladmin -uroot -p shutdown`  
 * **mysqlbinlog日志管理工具**  
-用法如下：`shell> mysqlbinlog[options] log-files1 log-files2...`选下如下：  
+用法如下：`shell> mysqlbinlog[options] log-files1 log-files2...`选下如下：   
 - -d,--database=name:指定数据库名称，只列出指定的数据库相关操作；  
 - -o,--offset=#:忽略掉日志中的前n行命令；  
 - -r,--result-file=name:将输出的文本格式日志输出到指定文件；  
