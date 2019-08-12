@@ -27,10 +27,10 @@
 比如`shell# mysqladmin -uroot -p shutdown`  
 * **mysqlbinlog日志管理工具**  
 用法如下：`shell> mysqlbinlog[options] log-files1 log-files2...`选下如下：   
-- -d,--database=name:指定数据库名称，只列出指定的数据库相关操作；  
-- -o,--offset=#:忽略掉日志中的前n行命令；  
-- -r,--result-file=name:将输出的文本格式日志输出到指定文件；  
-- -s,--short-form：显示简单个事，省略掉一些信息；  
-- --set-charset=char-name:在输出为文本格式时，在文件第一行加上set names char-name,这个选项在某些情况下装在数据时非常有用；  
-- --start-datetime=name-stop-datettime=name:指定日期间隔内的所有日志；  
-- --start-position=# --stop-position=#: 指定位置间隔内的所有日志。  
+  - -d,--database=name:指定数据库名称，只列出指定的数据库相关操作；  
+  - -o,--offset=#:忽略掉日志中的前n行命令；  
+  - -r,--result-file=name:将输出的文本格式日志输出到指定文件；  
+  - -s,--short-form：显示简单个事，省略掉一些信息；  
+  - --set-charset=char-name:在输出为文本格式时，在文件第一行加上set names char-name,这个选项在某些情况下装在数据时非常有用；  
+  - --start-datetime=name-stop-datettime=name:指定日期间隔内的所有日志；  
+  - --start-position=# --stop-position=#: 指定位置间隔内的所有日志。  
