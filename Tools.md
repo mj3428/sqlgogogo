@@ -42,6 +42,6 @@ shell> mysqlcheck [options] --database DB1 [DB2 DB3..]
 shell> mysqlcheck [options] --all--database
 ```
 option选项如下：  
-    - -c, --check(检查表)；  
-    - -r, --repair(修复表)；
-    - -a, --analyze(分析表)；
+  - -c, --check(检查表)；  
+  - -r, --repair(修复表)；  
+  - -a, --analyze(分析表)；
