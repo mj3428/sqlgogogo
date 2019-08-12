@@ -44,4 +44,22 @@ shell> mysqlcheck [options] --all--database
 option选项如下：  
   - -c, --check(检查表)；  
   - -r, --repair(修复表)；  
-  - -a, --analyze(分析表)；
+  - -a, --analyze(分析表)；  
+  - -o, --optimize(优化表)；  
+* **mysqldump数据导出工具**
+用法如下：
+```
+shell> mysqldump [options] db_name #备份单个数据库或者库中部分数据表
+shell> mysqldump [options] --database DB1[DB2 DB3] #备份指定的一个或多个数据库
+shell> mysqldump [options] --all--database #备份所有数据库
+```
+  * **输出内容选项**  
+  > --add-drop-database 每个数据库创建语句前加上DROP DATABASE语句  
+  > --add-drop-table 在每个表创建语句前DROP TABLE语句  
+  > -n, --no-create-db 不包含数据的创建语句  
+  > -t, --no-create-info 不包含数据的创建语句  
+  > -d, --no-data 不包含数据  
+* **mysqlshow数据库对象查看工具**  
+使用方法:`shell> msyqlshow[option][db_name[tal_name[col_name]]]`  
+* **replace文本替换工具**
+```
