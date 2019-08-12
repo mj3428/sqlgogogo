@@ -34,3 +34,14 @@
   - --set-charset=char-name:在输出为文本格式时，在文件第一行加上set names char-name,这个选项在某些情况下装在数据时非常有用；  
   - --start-datetime=name-stop-datettime=name:指定日期间隔内的所有日志；  
   - --start-position=# --stop-position=#: 指定位置间隔内的所有日志。  
+* **mysqlcheck表维护工具**  
+用法如下:
+```
+shell> msyqlcheck [options] db_name [tables]
+shell> mysqlcheck [options] --database DB1 [DB2 DB3..]
+shell> mysqlcheck [options] --all--database
+```
+option选项如下：  
+    - -c, --check(检查表)；  
+    - -r, --repair(修复表)；
+    - -a, --analyze(分析表)；
