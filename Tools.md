@@ -63,3 +63,8 @@ shell> mysqldump [options] --all--database #备份所有数据库
 使用方法:`shell> msyqlshow[option][db_name[tal_name[col_name]]]`  
 * **replace文本替换工具**
 ```
+shell> replace from to [from to].. --file[file]..
+shell> replace from to [from to].. <file
+```
+
+覆盖方式(--);非覆盖方式(<);
